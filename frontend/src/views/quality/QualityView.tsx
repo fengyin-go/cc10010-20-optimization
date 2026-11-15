@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { downloadEntries, listEntries, moduleMeta, runAction as applyAction } from '@/api/local-service'
-import type { EntryRow } from '@/data/types'
+import { downloadEntries, listEntries, loadGovernanceBoard, moduleMeta, runAction as applyAction } from '@/api/local-service'
+import type { EntryRow, GovernanceBoard, QualityAlertRecord } from '@/data/types'
 
 const meta = moduleMeta('quality')
 const columns = [
@@ -45,6 +45,7 @@ export default function QualityView() {
   const [total, setTotal] = useState(0)
   const [errorMessage, setErrorMessage] = useState('')
   const [filters, setFilters] = useState<Record<string, string>>({})
+  const [board, setBoard] = useState<GovernanceBoard>({ objects: [], hits: [], alerts: [] })
   const filterFields = useMemo(() => columns.slice(0, 3), [])
 
   const reload = useCallback(() => {
@@ -53,6 +54,7 @@ export default function QualityView() {
       const payload = listEntries(meta.key, filters)
       setRows(payload.items)
       setTotal(payload.total)
+      setBoard(loadGovernanceBoard())
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : '质量监控列表读取失败')
     }
@@ -106,6 +108,8 @@ export default function QualityView() {
         ))}
       </p>
 
+      <AlertSummary alerts={board.alerts} />
+
       <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); reload() }}>
         {filterFields.map((field) => (
           <label key={field} className="filter-item">
@@ -156,5 +160,33 @@ export default function QualityView() {
         {errorMessage && <span className="error-text">{errorMessage}</span>}
       </footer>
     </section>
+  )
+}
+
+function AlertSummary({ alerts }: { alerts: QualityAlertRecord[] }) {
+  return (
+    <div className="alert-summary">
+      <h3 className="section-title">治理告警结论（按对象只保留优先级最高的一条）</h3>
+      {alerts.length === 0 ? (
+        <p className="empty-hint">暂无治理告警；在湖仓治理页触发冲突裁决后，结论会同步到这里。</p>
+      ) : (
+        <table className="data-table compact">
+          <thead>
+            <tr><th>监控对象</th><th>胜出规则</th><th>优先级依据</th><th>治理结论</th><th>压制规则</th></tr>
+          </thead>
+          <tbody>
+            {alerts.map((alert) => (
+              <tr key={alert.alertId}>
+                <td>{alert.objectId}</td>
+                <td>{alert.ruleNo}</td>
+                <td>{alert.priorityLabel}</td>
+                <td>{alert.conclusion}</td>
+                <td>{alert.supersededRules.length > 0 ? alert.supersededRules.join('、') : '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
   )
 }

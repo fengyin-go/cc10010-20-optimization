@@ -35,3 +35,32 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+.section-title { font-size: 14px; margin: 18px 0 8px; }
+.conflict-board { margin-top: 8px; }
+.empty-hint { color: var(--muted); font-size: 12px; margin: 6px 0; }
+.object-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.object-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.object-card.active { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand) inset; }
+.object-head { display: flex; align-items: center; gap: 8px; }
+.rule-count { color: var(--muted); font-size: 12px; }
+.conflict-tag { background: #fff4e5; color: #b54708; border-radius: 999px; padding: 1px 8px; font-size: 12px; }
+.rule-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.rule-list li { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--muted); border-left: 2px solid var(--border); padding-left: 8px; }
+.rule-list li.rule-first { border-left-color: var(--brand); color: #1f2937; }
+.rule-no { font-weight: 600; }
+.rule-priority { color: var(--muted); }
+.disposal-box { background: #f0f7ff; border: 1px solid #cfe3ff; border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.disposal-box.stale { background: #fffaeb; border-color: #fedf89; }
+.disposal-label { color: var(--muted); }
+.disposal-meta { color: var(--muted); }
+.stale-hint { color: #b54708; }
+.outcome-tag { border-radius: 999px; padding: 1px 8px; font-size: 12px; }
+.outcome-tag.winner { background: #ecfdf3; color: #067647; }
+.outcome-tag.superseded { background: #eef2f7; color: #475467; }
+.outcome-tag.ineligible { background: #fff4e5; color: #b54708; }
+.decision-detail { margin-top: 14px; }
+.trace-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-top: 14px; }
+.trace-grid h4 { font-size: 13px; margin: 0 0 6px; }
+.data-table.compact th, .data-table.compact td { padding: 5px 8px; font-size: 12px; }
+.notice-text { color: #067647; }
+.alert-summary { margin-bottom: 12px; }
